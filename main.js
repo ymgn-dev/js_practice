@@ -39,3 +39,32 @@ counter++
 // テンプレートリテラル
 let dest = 'world'
 let greeting = `Hello, ${dest.toUpperCase()}!`
+
+// オブジェクト
+const harry = { name: 'Harry Smith', age: 42 }
+let harryAge = harry.age
+// プロパティの書き換え
+harry.age = 40
+// プロパティの追加
+harry.salary = 90000
+// プロパティの削除
+delete harry.salary
+// 存在しないプロパティへアクセス
+let boss = harry.supervisor // undefined
+// []でプロパティへアクセス
+let field = 'Age'
+let harrysAge = harry[field.toLowerCase()]
+
+// 配列(実はオブジェクトでプロパティ名が'0', '1', '2', ...なだけ)
+const numbers = [1, 2, 3, 'many']
+
+// json
+let json = JSON.stringify(harry)
+let parsed = JSON.parse(json)
+
+// 分割
+const pair = ['one', 'two']
+let first = pair[0]
+let second = pair[1]
+// 上2行と同意
+let [first, second] = pair
