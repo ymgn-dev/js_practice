@@ -6,6 +6,13 @@
 // jsではプライベートを表すのに_を付けない方がいい
 // また、変数の命名にはcamelCaseを使うのが好まれている
 
+// 5つの大原則
+// 1. 変数は、varではなく、letまたはconstで宣言せよ。
+// 2. strictモードを使え
+// 3. 型を理解し、自動的な型変換を避けよ。
+// 4. プロトタイプを理解しよう。しかし、クラスとコンストラクタとメソッドには現在の構文を使おう。
+// 5. thisは、コンストラクタまたはメソッドの中だけで使おう。
+
 // プロジェクト内では一貫して、
 // 意図して値を存在させない場合には、undefinedかnullを使うのが良い
 // 参考: p.13 nullとundefined
@@ -114,8 +121,8 @@ try {
     throw Error
   }
   console.log(parsed)
-} catch {
-  console.log('failed to parseInt.')
+} catch (e) {
+  console.log(e)
 }
 
 // 関数宣言
@@ -133,6 +140,23 @@ let multiBy10 = [0, 1, 2, 4].map(function (x) {
   return x * 10
 })
 
+// デフォルト引数
+const defaultAverage = (x, y = x) => (x + y) / 2
+
+// rest(...)パラメータ(残余引数)と展開演算子
+
+/// ...followingはfirst以外の引数の配列になる
+const restAverage = (first = 0, ...following) => {
+  let sum = first
+  for (const value of following) {
+    sum += value
+  }
+  return sum / (1 + following.length)
+}
+
+/// ...で配列の要素を展開できる
+let mathMax = Math.max(...[1, 7, 2, 9])
+
 // アロー関数
 // アロー関数はfunctionsキーワードを使うよりも正規な振る舞いをする(this参照)
 // アロー関数を積極的に使うのが良い
@@ -145,3 +169,99 @@ const dieToss = () => Math.trunc(Math.random() * 6) + 1
 let text = 'goodbye'
 setTimeout(() => console.log(text), 1000)
 text = 'hello'
+
+// プロトタイプ(prototype、複数のオブジェクトに共通するプロパティの集合)
+const employeePrototype = {
+  raiseSalary: function (percent) {
+    this.salary *= 1 + percent / 100
+  },
+}
+
+function createEmployee(name, salary) {
+  const result = { name, salary }
+  // プロトタイプを設定
+  Object.setPrototypeOf(result, employeePrototype)
+  return result
+}
+
+// クラス構文
+class SampleEmployee {
+  constructor(name, salary) {
+    this.name = name
+    this.salary = salary
+  }
+  raiseSalary(percent) {
+    this.salary *= 1 + percent / 100
+  }
+}
+
+const harryInstance = new SampleEmployee('Harry Smith', 90000)
+
+// ゲッターとセッター
+class Person {
+  constructor(last, first) {
+    this.last = last
+    this.first = first
+  }
+  get fullName() {
+    return `${this.last}, ${this.first}`
+  }
+  set fullName(value) {
+    const parts = value.split(/,\s*/)
+    this.last = parts[0]
+    this.first = parts[1]
+  }
+}
+
+const harryPersonInstance = new Person('Smith', 'Harry')
+console.log(harryPersonInstance.fullName)
+
+// プライベートとstatic
+class BankAccount {
+  // #を付けるとプライベートになる
+  #balance = 0
+  deposit(amount) {
+    this.#balance += amount
+    console.log(this.#balance)
+  }
+
+  // staticなメソッド
+  static #percentOf(amount, rate) {
+    return (amount * rate) / 100
+  }
+
+  // staticなフィールド
+  static OVERDRAFT_FEE = 30
+
+  addInterest(rate) {
+    // staticなメソッドはクラス名.メソッド名でアクセスする
+    this.#balance += BankAccount.#percentOf(this.#balance, rate)
+  }
+}
+
+const bankAccountInstance = new BankAccount()
+bankAccountInstance.deposit(3)
+bankAccountInstance.deposit(3)
+
+// クラスとサブクラス
+class Employee {
+  constructor(name, salary) {
+    this.name = name
+    this.salary = salary
+  }
+  raiseSalary(percent) {
+    this.salary *= 1 + percent / 100
+  }
+}
+
+class Manager extends Employee {
+  constructor(name, salary, bonus) {
+    super(name, salary) // 親クラスのコンストラクタを必ず呼ぶ必要がある
+    this.bonus = bonus // thisが使えるようになるのは親のコンストラクタを呼んでから
+  }
+  getSalary() {
+    // 親のメソッドを呼ぶ時はsuper.メソッド名とする
+    // super.raiseSalary()
+    return this.salary + this.bonus
+  }
+}
