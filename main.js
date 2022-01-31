@@ -305,3 +305,85 @@ typeof 4444n // 'bigint'
 
 // 日付(Date)
 const epoch = new Date('1970-01-01T00:00:00.00Z')
+
+// Unicodeコードポイントから文字列への変換
+let str = String.fromCodePoint(0x48, 0x69, 0x20, 0x1f310, 0x21)
+
+// 部分文字列
+let index = 'Hello yellow'.indexOf('el') // elが出現するのは1番目
+index = 'Hello yellow'.lastIndexOf('el') // elが最後に出現するのは7番目
+
+let isHttps = 'https://hoge'.startsWith('https')
+let isGif = 'hoge.gif'.endsWith('.gif')
+let isQuery = 'hoge?='.includes('?')
+let substring = 'I😍yellow'.substring(3, 7) // yell
+let slice = 'I😍yellow'.slice(-6, -2) // yell, slice(3, 7)と同じ
+// ↑substringよりsliceの方が好ましいという人もいる。
+// 負のオフセットを文字列の末尾から数える点と、メソッド名が短い点が良い。
+
+// 正規表現
+const timeRegex = /^([1-9]|1[0-2]):[0-9]{2} [ap]m$/
+
+// lengthプロパティ
+const names = ['Peter', 'Paul', 'Mary']
+const someNames = [, 'Smith', , 'Jones'] // lengthは4
+someNames[5] = 'Miller' // lengthは6になる
+someNames.length = 100 // lengthは100になる
+someNames.length = 4 // someNames[4]とその先の要素は消える
+
+// 要素の削除と追加
+let arr = [0, 1, 4, 9, 16, 25]
+const deletedElement = arr.pop()
+const newLength = arr.push(x)
+arr = [9] // [9]
+arr.push(16, 25) // [9, 16, 25]
+
+arr.unshift(0, 1, 4) // [0, 1, 4, 9, 16, 25]
+
+let flatten = [([1, 2], [3, 4])].flat() // [1, 2, 3, 4]
+
+// 次の2つの呼び出しは等価
+arr.forEach((element, index) => console.log(index, element))
+for (const index in arr) {
+  console.log(index, arr[index])
+}
+
+// マップ
+// jsのオブジェクトは一種のマップであるが、代わりにMapクラスを使うことには次の利点がある
+// 1. オブジェクトのキーには文字列かシンボルが必要だがマップのキーは型を問わない
+// 2. マップのインスタンスは要素が挿入された順番を覚えている
+// 3. オブジェクトと違って、マップにはプロトタイプチェインがない
+// 4. sizeプロパティを見ればエントリ数が分かる
+
+// マップの宣言と初期化
+const weekdays = new Map([
+  ['Mon', 0],
+  ['Tue', 1],
+  ['Wed', 2],
+  ['Thu', 3],
+  ['Fri', 4],
+  ['Sat', 5],
+  ['Sun', 6],
+])
+
+// 空のマップを宣言後にあとからエントリを追加
+const emptyMap = new Map()
+emptyMap.set('key', 'value')
+emptyMap.delete('key')
+if (emptyMap.has('key')) {
+  console.log(emptyMap.get('key'))
+}
+for (const [key, value] of emptyMap) {
+  console.log(key, value)
+}
+
+// セット(重複のない要素を集めるデータ構造, 集合)
+const emptySet = new Set()
+emptySet.add('a')
+emptySet.delete('a')
+emptySet.has('a')
+emptySet.clear()
+
+for (const value of emptySet) {
+  console.log(value)
+}
