@@ -265,3 +265,43 @@ class Manager extends Employee {
     return this.salary + this.bonus
   }
 }
+
+// 数値リテラルにはアンダースコアを途中に記述できる
+// 単に見やすくするためのものであって意味は持たない
+console.log(123_456_789)
+
+// 数値のフォーマット
+const n = 3735928559
+console.log(n.toString(16))
+console.log(n.toString(8))
+
+// NaNの判定
+const nan = NaN // NaNは「数ではない」値
+console.log(Number.isNaN(nan))
+// Nan === Nanは必ずfalseになるため===ではチェックできない
+console.log(nan === NaN)
+// Number.isFinite(nan) // 有限の数
+// Number.isInteger(nan) // 整数か
+// Number.isSafeInteger(nan) // 丸めが発生しない安全な範囲に整数があるか
+// Number.MAX_VALUE
+// Number.MIN_VALUE
+
+// Math
+Math.max(1, 2)
+Math.min(1, 2)
+Math.round(2.5) // 3
+Math.round(-2.5) // 2
+Math.trunc(2.5) // 2
+Math.abs(-3)
+Math.sign(-3) // (符号)-1
+Math.random() // 0 <= x < 1
+// a以上b未満のdouble, intの乱数
+// const randomInt = a + Math.trunc((b - a) * Math.random())
+// const randomDouble = a + (b - a) * Math.random()
+
+// ビッグ整数(任意の桁数を持たせられる整数)
+8888888888888n // サフィックスにnを付ける
+typeof 4444n // 'bigint'
+
+// 日付(Date)
+const epoch = new Date('1970-01-01T00:00:00.00Z')
