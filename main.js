@@ -332,7 +332,7 @@ someNames.length = 100 // lengthは100になる
 someNames.length = 4 // someNames[4]とその先の要素は消える
 
 // 要素の削除と追加
-let arr = [0, 1, 4, 9, 16, 25]
+arr = [0, 1, 4, 9, 16, 25]
 const deletedElement = arr.pop()
 const newLength = arr.push(x)
 arr = [9] // [9]
@@ -387,3 +387,32 @@ emptySet.clear()
 for (const value of emptySet) {
   console.log(value)
 }
+
+// 日付オブジェクトの整形
+const newYearsEve = new Date(1999, 11, 31, 23, 59)
+/// ロケールタグ指定
+console.log(newYearsEve.toLocaleString('de'))
+/// 複数のロケールタグ指定
+console.log(newYearsEve.toLocaleString(['ja-JP', 'de-CH', 'de', 'en']))
+/// ロケールタグとオプション指定
+console.log(newYearsEve.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' }))
+/// フォーマッタ
+const jaDateTimeFormatter = new Intl.DateTimeFormat('ja-JP')
+console.log(jaDateTimeFormatter.format(newYearsEve))
+
+// 数の整形
+let number = 123456.78
+console.log(number.toLocaleString('de'))
+/// フォーマッタ
+let formatter = new Intl.NumberFormat('ja-JP')
+console.log(formatter.format(123456789))
+
+// 照合(コレーション)
+const words = ['Alpha', 'ångström', 'Zulu', 'able', 'zebra']
+/// スウェーデン
+console.log(words.sort((lhs, rhs) => lhs.localeCompare(rhs, 'sv')))
+/// 英語
+console.log(words.sort((lhs, rhs) => lhs.localeCompare(rhs, 'en')))
+/// コレーターオブジェクトを構築
+const swedishCollator = new Intl.Collator('sv')
+console.log(words.sort(swedishCollator.compare))
