@@ -416,3 +416,91 @@ console.log(words.sort((lhs, rhs) => lhs.localeCompare(rhs, 'en')))
 /// コレーターオブジェクトを構築
 const swedishCollator = new Intl.Collator('sv')
 console.log(words.sort(swedishCollator.compare))
+
+// 複数のプロミスを実行する
+// const promissess = [loadImage(), loadImage()]
+// Promise.all(promissess)
+//   .then(() => console.log)
+//   .finally(() => console.log('clean up')) // クリーンアップを行う
+//   .catch((reason) => console.log({ reason }))
+
+// プロミスの競争
+// Promise.raceは失敗したプロミスが競争に勝つこともあり、不便なため非推奨
+// 代わりにanyを使うのが推奨されている
+// Promise.any(promissess)
+//   .then((result) => console.log({ result }))
+//   .catch((error) => console.log({ error }))
+
+// async関数
+// const putImage = async (url, element) => {
+//   // awaitでプロミスの解決を待つ
+//   const img = await loadImage(url)
+//   // 結果を処理
+//   element.appendChild(img)
+// }
+
+// awaitの連続的な呼び出しは1つずつ実行される
+// const img1 = await loadImage(url)
+// const img2 = await loadImage(url) // 最初の画像がロードされた後に開始される
+
+// 画像を並行してロードするにはPromise.allが使える
+/// Promise.allの引数はプロミスのイテラブルである必要がある
+// const [img1, img2] = await Promise.all([loadImage(url), loadImage(url)])
+
+// これは間違い(並行ロードになっていない)
+// const [img1, img2] = [await loadImage(url), await loadImage(url)]
+
+// デフォルトインポート
+// defaultでexportされている機能に名前を付けてimport
+
+// caesar.mjs内でdefault exportされている機能にCaesarCipherと名前を付ける
+// import CaesarCipher from './module/caesar.mjs'
+
+// 名前付きインポート
+// モジュールからencrypt, decryptという2つの関数をimport
+// 必ず{}で囲む(囲むのを忘れるとデフォルトインポートに名前を付けたことになる)
+// import {encrypt, decrypt} from './module/caesar.mjs'
+
+// 名前衝突の回避
+// encryptという関数名が他のモジュールからimportした関数名と被ると危険
+// importする機能の名前を付け直すにはasを使う
+// import {
+//   encrypt as caesarEncrypt,
+//   decrypt as caesarDecrypt,
+// } from './module/caesar.mjs'
+
+// デフォルト機能と名前付き機能の両方を同時にインポート
+// import CaesarCipher, { encrypt, decrypt } from './module/caesar.mjs'
+
+// 全てのモジュールをまとめてインポート
+// CaesarCipherTools.encryptなどでアクセスできる
+// デフォルト機能はCaesarCipherTools.defaultでアクセスできる
+// import * as CaesarCipherTools from './module/caesar.mjs'
+
+// デフォルトには名前を付け、その他はまとめてインポート
+// import CaesarCipher, * as CaesarCipherTools from './module.caesar.mjs'
+
+// 名前付きエクスポート
+// exportタグを使う
+// export function encrypt(str, key) {}
+// export class Cipher {}
+// export const DEFAULT_KEY = 3
+
+// あるいはエクスポートしたい機能の名前をまとめてexport文に渡すこともできる
+// function decrypt(params) {}
+// class CCipher {}
+// export { decrypt, CCipher }
+// export文では機能に別名を付けられる
+// export { decrypt as caesarDecrypt, CCipher }
+
+// デフォルトエクスポート
+// export default class Cipher {}
+
+// オブジェクトをデフォルトエクスポート
+// export default { encrypt, Cipher }
+
+// 改名の構文を使ってデフォルト機能を宣言
+// export { Cipher as default }
+
+// 他のモジュールのデフォルト以外の機能をエクスポート
+// export * from './modules/random.mjs'
